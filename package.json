@@ -1,0 +1,27 @@
+{
+  "name": "synapse-orm",
+  "description": "Offshore ORM integration middleware for Synapse",
+  "version": "0.0.1",
+  "author": "Alexandre Tiertant <a.tiertant@atlantis-software.net>",
+  "contributors": [
+  ],
+  "license": "MIT",
+  "main": "./index.js",
+  "repository": "",
+  "homepage": "",
+  "keywords": [
+
+  ],
+  "dependencies": {
+    "offshore": "~0.1.1"
+  },
+  "devDependencies": {
+    "mocha": "3.2.0"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "mocha --bail --reporter spec test/"
+  }
+}
