@@ -1,5 +1,5 @@
 {
-  "name": "synapse-orm",
+  "name": "@synapps/orm",
   "description": "Offshore ORM integration middleware for Synapse",
   "version": "0.0.1",
   "author": "Alexandre Tiertant <a.tiertant@atlantis-software.net>",
@@ -7,8 +7,8 @@
   ],
   "license": "MIT",
   "main": "./index.js",
-  "repository": "",
-  "homepage": "",
+  "repository": "https://github.com/Atlantis-Software/synapps-orm",
+  "homepage": "https://github.com/Atlantis-Software/synapps-orm",
   "keywords": [
 
   ],
