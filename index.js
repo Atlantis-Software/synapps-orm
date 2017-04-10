@@ -199,15 +199,6 @@ module.exports = function(config) {
         });
       });
 
-
-      var db = new CollectionMutator('memory_a');
-
-      db.user.find({}, function(err, users) {
-        console.log(err, users);
-      });
-
-
-      
       init.resolve(orm);
     });
   }).fail(function(err) {
