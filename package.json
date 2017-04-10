@@ -1,6 +1,6 @@
 {
   "name": "@synapps/orm",
-  "description": "Offshore ORM integration middleware for Synapse",
+  "description": "Offshore ORM integration middleware for Synapps",
   "version": "0.0.1",
   "author": "Alexandre Tiertant <a.tiertant@atlantis-software.net>",
   "contributors": [
