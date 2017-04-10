@@ -1,1 +1,1 @@
-# synapse-orm
+# synapps-orm
