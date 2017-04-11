@@ -178,6 +178,7 @@ module.exports = function(config) {
   }
 
   var init = asynk.deferred();
+  var CollectionMutator;
   asynk.when(connectionsDeffer, collectionsDeffer).done(function() {
     offshore.initialize(config, function(err, orm) {
       if (err) {
@@ -185,7 +186,7 @@ module.exports = function(config) {
       }
 
       var collections = _.keys(orm.collections);
-      var CollectionMutator = function(defaultConnection) {
+      CollectionMutator = function(defaultConnection) {
         this._defaultConnection = defaultConnection;
       };
       collections.forEach(function(collectionName) {
@@ -207,6 +208,10 @@ module.exports = function(config) {
 
   return function(req, next) {
     init.done(function(orm) {
+      if (req.defaultConnection) {
+        req.db = new CollectionMutator(req.defaultConnection);
+        return next();
+      }
       req.db = orm.collections;
       next();
     });
