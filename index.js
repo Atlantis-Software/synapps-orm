@@ -195,7 +195,46 @@ module.exports = function(config) {
             if (!orm.collections[collectionName]) {
               return;
             }
-            return orm.collections[collectionName]._loadQuery({defaultConnection: this._defaultConnection});
+
+            var self = this;
+            var collection = orm.collections[collectionName]._loadQuery({defaultConnection: this._defaultConnection});
+
+            // Apply default connection adapter specific methods to collection
+            if (collection.connection[0] === 'default' && !orm.connections.default._adapter) {
+              var adapter = orm.connections[this._defaultConnection]._adapter;
+              _.each(_.keys(adapter), function(key) {
+
+                // Ignore the Identity Property
+                if (['identity', 'tableName'].indexOf(key) >= 0) return;
+
+                // Don't override keys that already exists
+                if (collection[key]) return;
+
+                // Don't override a property, only functions
+                if (typeof adapter[key] != 'function') {
+                  collection[key] = adapter[key];
+                  return;
+                }
+
+                // Apply the Function with passed in args and set this.identity as
+                // the first argument
+                collection[key] = function() {
+
+                  var tableName = collection.tableName || collection.identity;
+
+                  // If this is the teardown method, just pass in the connection name,
+                  // otherwise pass the connection and the tableName
+                  var defaultArgs = key === 'teardown' ? [self._defaultConnection] : [self._defaultConnection, tableName];
+
+                  // Concat self.identity with args (must massage arguments into a proper array)
+                  // Use a normalized _tableName set in the core module.
+                  var args = defaultArgs.concat(Array.prototype.slice.call(arguments));
+                  return adapter[key].apply(collection, args);
+                };
+              });
+            }
+
+            return collection;
           }
         });
       });
