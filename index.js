@@ -26,7 +26,7 @@ function autoLoadConnections(root, cb) {
     var connections = null;
     try {
       connections = require(connectionsFile);
-    } catch(e) {
+    } catch (e) {
       return cb(e);
     }
     if (connections && _.isObject(connections)) {
@@ -96,7 +96,7 @@ function autoLoadModels(root, cb) {
             var modelObj;
             try {
               modelObj = JSON.parse(filecontent);
-            } catch(e) {
+            } catch (e) {
               return cb(e);
             }
             modelObj.schema = modelObj.schema || true;
@@ -134,7 +134,7 @@ module.exports = function(config) {
   config = config || {};
   // initialize connections configuration
   var connectionsDeffer = asynk.deferred();
-  if (!config.connections) {  
+  if (!config.connections) {
     // auto load connections
     autoLoadConnections(root, function(err, connections) {
       if (err) {
@@ -174,6 +174,12 @@ module.exports = function(config) {
       collectionsDeffer.resolve();
     });
   } else {
+    config.collections.forEach(function(modelObj, index) {
+      modelObj.schema = modelObj.schema || true;
+      modelObj.migrate = modelObj.migrate || 'safe';
+      modelObj.connection = modelObj.connection || 'default';
+      config.collections[index] = Offshore.Collection.extend(modelObj);
+    });
     collectionsDeffer.resolve();
   }
 

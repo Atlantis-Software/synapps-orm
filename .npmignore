@@ -16,3 +16,8 @@ CONTRIBUTING.md
 *.swm
 .editorconfig
 examples
+coverage/
+test/
+synapps.log
+package-lock.json
+.nyc_output/
