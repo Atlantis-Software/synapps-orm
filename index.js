@@ -1,9 +1,3 @@
-// lib/offshore/collection/loader
-//97    // Ensure the named connection exist
-//98    if (conn !== 'default' && !hasOwnProperty(connections, conn)) {
-
-
-
 var Offshore = require('offshore');
 var asynk = require('asynk');
 var path = require('path');
@@ -255,7 +249,7 @@ module.exports = function(config) {
     throw err;
   });
 
-  return function(req, next) {
+  var middleware = function(req, next) {
     init.done(function(orm) {
       if (req.defaultConnection) {
         req.db = new CollectionMutator(req.defaultConnection);
@@ -264,8 +258,11 @@ module.exports = function(config) {
       req.db = orm.collections;
       next();
     });
-    init.fail(function(err) {
-      next(err);
-    });
   };
+
+  middleware.mw_name = "ORM";
+
+  middleware.mw_status = init.promise();
+
+  return middleware;
 };
